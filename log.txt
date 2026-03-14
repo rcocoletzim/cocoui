@@ -1,0 +1,396 @@
+[1/14] Building C object _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rshapes.c.obj
+FAILED: _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rshapes.c.obj 
+C:\PROGRA~1\LLVM\bin\clang.exe -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS -IC:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src -isystem C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -O0 -std=gnu99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rshapes.c.obj -MF _deps\raylib-build\raylib\CMakeFiles\raylib.dir\rshapes.c.obj.d -o _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rshapes.c.obj -c C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/rshapes.c
+In file included from C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/rshapes.c:47:
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:217:1: error: unknown type name 'using'
+  217 | using Vector2 = struct Vector2 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:217:17: error: expected expression
+  217 | using Vector2 = struct Vector2 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:223:1: error: unknown type name 'using'
+  223 | using Vector3 = struct Vector3 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:223:17: error: expected expression
+  223 | using Vector3 = struct Vector3 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:230:1: error: unknown type name 'using'
+  230 | using Vector4 = struct Vector4 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:230:17: error: expected expression
+  230 | using Vector4 = struct Vector4 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:238:1: error: unknown type name 'using'
+  238 | using Quaternion = Vector4;
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:241:1: error: unknown type name 'using'
+  241 | using Matrix = struct Matrix {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:241:16: error: expected expression
+  241 | using Matrix = struct Matrix {
+      |                ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:249:1: error: unknown type name 'using'
+  249 | using Color = struct Color {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:249:15: error: expected expression
+  249 | using Color = struct Color {
+      |               ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:257:1: error: unknown type name 'using'
+  257 | using Rectangle = struct Rectangle {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:257:19: error: expected expression
+  257 | using Rectangle = struct Rectangle {
+      |                   ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:265:1: error: unknown type name 'using'
+  265 | using Image = struct Image {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:265:15: error: expected expression
+  265 | using Image = struct Image {
+      |               ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:274:1: error: unknown type name 'using'
+  274 | using Texture = struct Texture {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:274:17: error: expected expression
+  274 | using Texture = struct Texture {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:283:1: error: unknown type name 'using'
+  283 | using Texture2D = Texture;
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:286:1: error: unknown type name 'using'
+  286 | using TextureCubemap = Texture;
+      | ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+[2/14] Building C object _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rmodels.c.obj
+FAILED: _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rmodels.c.obj 
+C:\PROGRA~1\LLVM\bin\clang.exe -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS -IC:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src -isystem C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -O0 -std=gnu99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rmodels.c.obj -MF _deps\raylib-build\raylib\CMakeFiles\raylib.dir\rmodels.c.obj.d -o _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rmodels.c.obj -c C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/rmodels.c
+In file included from C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/rmodels.c:43:
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:217:1: error: unknown type name 'using'
+  217 | using Vector2 = struct Vector2 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:217:17: error: expected expression
+  217 | using Vector2 = struct Vector2 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:223:1: error: unknown type name 'using'
+  223 | using Vector3 = struct Vector3 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:223:17: error: expected expression
+  223 | using Vector3 = struct Vector3 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:230:1: error: unknown type name 'using'
+  230 | using Vector4 = struct Vector4 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:230:17: error: expected expression
+  230 | using Vector4 = struct Vector4 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:238:1: error: unknown type name 'using'
+  238 | using Quaternion = Vector4;
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:241:1: error: unknown type name 'using'
+  241 | using Matrix = struct Matrix {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:241:16: error: expected expression
+  241 | using Matrix = struct Matrix {
+      |                ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:249:1: error: unknown type name 'using'
+  249 | using Color = struct Color {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:249:15: error: expected expression
+  249 | using Color = struct Color {
+      |               ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:257:1: error: unknown type name 'using'
+  257 | using Rectangle = struct Rectangle {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:257:19: error: expected expression
+  257 | using Rectangle = struct Rectangle {
+      |                   ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:265:1: error: unknown type name 'using'
+  265 | using Image = struct Image {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:265:15: error: expected expression
+  265 | using Image = struct Image {
+      |               ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:274:1: error: unknown type name 'using'
+  274 | using Texture = struct Texture {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:274:17: error: expected expression
+  274 | using Texture = struct Texture {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:283:1: error: unknown type name 'using'
+  283 | using Texture2D = Texture;
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:286:1: error: unknown type name 'using'
+  286 | using TextureCubemap = Texture;
+      | ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+[3/14] Scanning C:/Users/Admin/GitHub/cocoui/src/simulator/main.cpp for CXX dependencies
+[4/14] Building C object _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rcore.c.obj
+FAILED: _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rcore.c.obj 
+C:\PROGRA~1\LLVM\bin\clang.exe -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS -IC:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src -isystem C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -O0 -std=gnu99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rcore.c.obj -MF _deps\raylib-build\raylib\CMakeFiles\raylib.dir\rcore.c.obj.d -o _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rcore.c.obj -c C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/rcore.c
+In file included from C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/rcore.c:98:
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:217:1: error: unknown type name 'using'
+  217 | using Vector2 = struct Vector2 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:217:17: error: expected expression
+  217 | using Vector2 = struct Vector2 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:223:1: error: unknown type name 'using'
+  223 | using Vector3 = struct Vector3 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:223:17: error: expected expression
+  223 | using Vector3 = struct Vector3 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:230:1: error: unknown type name 'using'
+  230 | using Vector4 = struct Vector4 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:230:17: error: expected expression
+  230 | using Vector4 = struct Vector4 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:238:1: error: unknown type name 'using'
+  238 | using Quaternion = Vector4;
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:241:1: error: unknown type name 'using'
+  241 | using Matrix = struct Matrix {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:241:16: error: expected expression
+  241 | using Matrix = struct Matrix {
+      |                ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:249:1: error: unknown type name 'using'
+  249 | using Color = struct Color {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:249:15: error: expected expression
+  249 | using Color = struct Color {
+      |               ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:257:1: error: unknown type name 'using'
+  257 | using Rectangle = struct Rectangle {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:257:19: error: expected expression
+  257 | using Rectangle = struct Rectangle {
+      |                   ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:265:1: error: unknown type name 'using'
+  265 | using Image = struct Image {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:265:15: error: expected expression
+  265 | using Image = struct Image {
+      |               ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:274:1: error: unknown type name 'using'
+  274 | using Texture = struct Texture {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:274:17: error: expected expression
+  274 | using Texture = struct Texture {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:283:1: error: unknown type name 'using'
+  283 | using Texture2D = Texture;
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:286:1: error: unknown type name 'using'
+  286 | using TextureCubemap = Texture;
+      | ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+[5/14] Building CXX object CMakeFiles/cocoui_core.dir/src/core.cpp.obj
+C:/Users/Admin/GitHub/cocoui/include\cocoui/framebuffer.hpp:42:13: warning: 32 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   42 |     alignas(32) PixelType data_[pixel_count]{0};
+      |             ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/framebuffer.hpp:42:17: warning: do not declare C-style arrays, use 'std::array' instead [cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays]
+   42 |     alignas(32) PixelType data_[pixel_count]{0};
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/Admin/GitHub/cocoui/include\cocoui/framebuffer.hpp:71:21: warning: 2 adjacent parameters of 'draw_pixel' of similar type ('int16_t') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   71 |     void draw_pixel(int16_t x, int16_t y, PixelType color_value) noexcept {
+      |                     ^~~~~~~~~~~~~~~~~~~~
+C:/Users/Admin/GitHub/cocoui/include\cocoui/framebuffer.hpp:71:29: note: the first parameter in the range is 'x'
+   71 |     void draw_pixel(int16_t x, int16_t y, PixelType color_value) noexcept {
+      |                             ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/framebuffer.hpp:71:40: note: the last parameter in the range is 'y'
+   71 |     void draw_pixel(int16_t x, int16_t y, PixelType color_value) noexcept {
+      |                                        ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/framebuffer.hpp:71:29: warning: parameter name 'x' is too short, expected at least 3 characters [readability-identifier-length]
+   71 |     void draw_pixel(int16_t x, int16_t y, PixelType color_value) noexcept {
+      |                             ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/framebuffer.hpp:71:40: warning: parameter name 'y' is too short, expected at least 3 characters [readability-identifier-length]
+   71 |     void draw_pixel(int16_t x, int16_t y, PixelType color_value) noexcept {
+      |                                        ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:17:45: warning: 255 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   17 |     constexpr Color() : r(0), g(0), b(0), a(255) {}
+      |                                             ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:20:21: warning: 4 adjacent parameters of 'Color' of similar type ('uint8_t') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   20 |     constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) : r(r), g(g), b(b), a(a) {}
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:20:29: note: the first parameter in the range is 'r'
+   20 |     constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) : r(r), g(g), b(b), a(a) {}
+      |                             ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:20:62: note: the last parameter in the range is 'a'
+   20 |     constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) : r(r), g(g), b(b), a(a) {}
+      |                                                              ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:20:29: warning: parameter name 'r' is too short, expected at least 3 characters [readability-identifier-length]
+   20 |     constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) : r(r), g(g), b(b), a(a) {}
+      |                             ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:20:40: warning: parameter name 'g' is too short, expected at least 3 characters [readability-identifier-length]
+   20 |     constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) : r(r), g(g), b(b), a(a) {}
+      |                                        ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:20:51: warning: parameter name 'b' is too short, expected at least 3 characters [readability-identifier-length]
+   20 |     constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) : r(r), g(g), b(b), a(a) {}
+      |                                                   ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:20:62: warning: parameter name 'a' is too short, expected at least 3 characters [readability-identifier-length]
+   20 |     constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) : r(r), g(g), b(b), a(a) {}
+      |                                                              ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:25:21: warning: 16 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   25 |         : r((hex >> 16) & 0xFF), g((hex >> 8) & 0xFF), b(hex & 0xFF), a((hex >> 24) & 0xFF) {}
+      |                     ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:25:27: warning: 0xFF is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   25 |         : r((hex >> 16) & 0xFF), g((hex >> 8) & 0xFF), b(hex & 0xFF), a((hex >> 24) & 0xFF) {}
+      |                           ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:25:44: warning: 8 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   25 |         : r((hex >> 16) & 0xFF), g((hex >> 8) & 0xFF), b(hex & 0xFF), a((hex >> 24) & 0xFF) {}
+      |                                            ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:25:49: warning: 0xFF is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   25 |         : r((hex >> 16) & 0xFF), g((hex >> 8) & 0xFF), b(hex & 0xFF), a((hex >> 24) & 0xFF) {}
+      |                                                 ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:25:64: warning: 0xFF is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   25 |         : r((hex >> 16) & 0xFF), g((hex >> 8) & 0xFF), b(hex & 0xFF), a((hex >> 24) & 0xFF) {}
+      |                                                                ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:25:81: warning: 24 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   25 |         : r((hex >> 16) & 0xFF), g((hex >> 8) & 0xFF), b(hex & 0xFF), a((hex >> 24) & 0xFF) {}
+      |                                                                                 ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:25:87: warning: 0xFF is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   25 |         : r((hex >> 16) & 0xFF), g((hex >> 8) & 0xFF), b(hex & 0xFF), a((hex >> 24) & 0xFF) {}
+      |                                                                                       ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:28:76: warning: 24 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   28 |     [[nodiscard]] constexpr auto to_hex() const -> uint32_t { return (a << 24) | (r << 16) | (g << 8) | b; }
+      |                                                                            ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:28:88: warning: 16 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   28 |     [[nodiscard]] constexpr auto to_hex() const -> uint32_t { return (a << 24) | (r << 16) | (g << 8) | b; }
+      |                                                                                        ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:28:100: warning: 8 is a magic number; consider replacing it with a named constant [cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers]
+   28 |     [[nodiscard]] constexpr auto to_hex() const -> uint32_t { return (a << 24) | (r << 16) | (g << 8) | b; }
+      |                                                                                                    ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:49:21: warning: 2 adjacent parameters of 'Point' of similar type ('int16_t') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   49 |     constexpr Point(int16_t x, int16_t y) : x(x), y(y) {}
+      |                     ^~~~~~~~~~~~~~~~~~~~
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:49:29: note: the first parameter in the range is 'x'
+   49 |     constexpr Point(int16_t x, int16_t y) : x(x), y(y) {}
+      |                             ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:49:40: note: the last parameter in the range is 'y'
+   49 |     constexpr Point(int16_t x, int16_t y) : x(x), y(y) {}
+      |                                        ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:49:29: warning: parameter name 'x' is too short, expected at least 3 characters [readability-identifier-length]
+   49 |     constexpr Point(int16_t x, int16_t y) : x(x), y(y) {}
+      |                             ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:49:40: warning: parameter name 'y' is too short, expected at least 3 characters [readability-identifier-length]
+   49 |     constexpr Point(int16_t x, int16_t y) : x(x), y(y) {}
+      |                                        ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:60:20: warning: 2 adjacent parameters of 'Size' of similar type ('int16_t') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   60 |     constexpr Size(int16_t w, int16_t h) : width(w), height(h) {}
+      |                    ^~~~~~~~~~~~~~~~~~~~
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:60:28: note: the first parameter in the range is 'w'
+   60 |     constexpr Size(int16_t w, int16_t h) : width(w), height(h) {}
+      |                            ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:60:39: note: the last parameter in the range is 'h'
+   60 |     constexpr Size(int16_t w, int16_t h) : width(w), height(h) {}
+      |                                       ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:60:28: warning: parameter name 'w' is too short, expected at least 3 characters [readability-identifier-length]
+   60 |     constexpr Size(int16_t w, int16_t h) : width(w), height(h) {}
+      |                            ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:60:39: warning: parameter name 'h' is too short, expected at least 3 characters [readability-identifier-length]
+   60 |     constexpr Size(int16_t w, int16_t h) : width(w), height(h) {}
+      |                                       ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:71:28: warning: parameter name 'x' is too short, expected at least 3 characters [readability-identifier-length]
+   71 |     constexpr Rect(int16_t x, int16_t y, int16_t w, int16_t h) : origin(x, y), size(w, h) {}
+      |                            ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:71:31: warning: 2 adjacent parameters of 'Rect' of similar type ('int16_t') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   71 |     constexpr Rect(int16_t x, int16_t y, int16_t w, int16_t h) : origin(x, y), size(w, h) {}
+      |                               ^~~~~~~~~~~~~~~~~~~~
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:71:39: note: the first parameter in the range is 'y'
+   71 |     constexpr Rect(int16_t x, int16_t y, int16_t w, int16_t h) : origin(x, y), size(w, h) {}
+      |                                       ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:71:50: note: the last parameter in the range is 'w'
+   71 |     constexpr Rect(int16_t x, int16_t y, int16_t w, int16_t h) : origin(x, y), size(w, h) {}
+      |                                                  ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:71:39: warning: parameter name 'y' is too short, expected at least 3 characters [readability-identifier-length]
+   71 |     constexpr Rect(int16_t x, int16_t y, int16_t w, int16_t h) : origin(x, y), size(w, h) {}
+      |                                       ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:71:50: warning: parameter name 'w' is too short, expected at least 3 characters [readability-identifier-length]
+   71 |     constexpr Rect(int16_t x, int16_t y, int16_t w, int16_t h) : origin(x, y), size(w, h) {}
+      |                                                  ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:71:61: warning: parameter name 'h' is too short, expected at least 3 characters [readability-identifier-length]
+   71 |     constexpr Rect(int16_t x, int16_t y, int16_t w, int16_t h) : origin(x, y), size(w, h) {}
+      |                                                             ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:72:26: warning: parameter name 'p' is too short, expected at least 3 characters [readability-identifier-length]
+   72 |     constexpr Rect(Point p, Size s) : origin(p), size(s) {}
+      |                          ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:72:34: warning: parameter name 's' is too short, expected at least 3 characters [readability-identifier-length]
+   72 |     constexpr Rect(Point p, Size s) : origin(p), size(s) {}
+      |                                  ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:76:68: warning: narrowing conversion from 'int' to signed type 'int16_t' (aka 'short') is implementation-defined [bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions]
+   76 |     [[nodiscard]] constexpr auto right() const -> int16_t { return origin.x + size.width; }
+      |                                                                    ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:78:69: warning: narrowing conversion from 'int' to signed type 'int16_t' (aka 'short') is implementation-defined [bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions]
+   78 |     [[nodiscard]] constexpr auto bottom() const -> int16_t { return origin.y + size.height; }
+      |                                                                     ^
+C:/Users/Admin/GitHub/cocoui/include\cocoui/primitives.hpp:81:56: warning: parameter name 'p' is too short, expected at least 3 characters [readability-identifier-length]
+   81 |     [[nodiscard]] constexpr auto contains(const Point& p) const -> bool {
+      |                                                        ^
+[6/14] Building C object _deps/raylib-build/raylib/CMakeFiles/raylib.dir/raudio.c.obj
+FAILED: _deps/raylib-build/raylib/CMakeFiles/raylib.dir/raudio.c.obj 
+C:\PROGRA~1\LLVM\bin\clang.exe -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS -IC:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src -isystem C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -O0 -std=gnu99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT _deps/raylib-build/raylib/CMakeFiles/raylib.dir/raudio.c.obj -MF _deps\raylib-build\raylib\CMakeFiles\raylib.dir\raudio.c.obj.d -o _deps/raylib-build/raylib/CMakeFiles/raylib.dir/raudio.c.obj -c C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/raudio.c
+In file included from C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src/raudio.c:75:
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:217:1: error: unknown type name 'using'
+  217 | using Vector2 = struct Vector2 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:217:17: error: expected expression
+  217 | using Vector2 = struct Vector2 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:223:1: error: unknown type name 'using'
+  223 | using Vector3 = struct Vector3 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:223:17: error: expected expression
+  223 | using Vector3 = struct Vector3 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:230:1: error: unknown type name 'using'
+  230 | using Vector4 = struct Vector4 {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:230:17: error: expected expression
+  230 | using Vector4 = struct Vector4 {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:238:1: error: unknown type name 'using'
+  238 | using Quaternion = Vector4;
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:241:1: error: unknown type name 'using'
+  241 | using Matrix = struct Matrix {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:241:16: error: expected expression
+  241 | using Matrix = struct Matrix {
+      |                ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:249:1: error: unknown type name 'using'
+  249 | using Color = struct Color {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:249:15: error: expected expression
+  249 | using Color = struct Color {
+      |               ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:257:1: error: unknown type name 'using'
+  257 | using Rectangle = struct Rectangle {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:257:19: error: expected expression
+  257 | using Rectangle = struct Rectangle {
+      |                   ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:265:1: error: unknown type name 'using'
+  265 | using Image = struct Image {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:265:15: error: expected expression
+  265 | using Image = struct Image {
+      |               ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:274:1: error: unknown type name 'using'
+  274 | using Texture = struct Texture {
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:274:17: error: expected expression
+  274 | using Texture = struct Texture {
+      |                 ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:283:1: error: unknown type name 'using'
+  283 | using Texture2D = Texture;
+      | ^
+C:/Users/Admin/GitHub/cocoui/build/_deps/raylib-src/src\raylib.h:286:1: error: unknown type name 'using'
+  286 | using TextureCubemap = Texture;
+      | ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+ninja: build stopped: subcommand failed.

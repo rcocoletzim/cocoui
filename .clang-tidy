@@ -1,0 +1,13 @@
+# Enable modern C++ checks, readability, and performance warnings.
+# Disable some overly strict checks that might conflict with embedded constraints.
+Checks: >
+  -*,
+  bugprone-*,
+  cppcoreguidelines-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-pro-bounds-constant-array-index
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'

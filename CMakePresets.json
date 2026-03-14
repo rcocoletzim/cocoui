@@ -1,0 +1,45 @@
+{
+  "version": 8,
+  "cmakeMinimumRequired": {
+    "major": 4,
+    "minor": 2,
+    "patch": 3
+  },
+  "configurePresets": [
+    {
+      "name": "windows-clang",
+      "displayName": "Windows LLVM/Clang (Ninja)",
+      "description": "Configures the project using the official LLVM Clang compiler",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "build-simulator",
+      "configurePreset": "windows-clang",
+      "displayName": "Build Simulator Target",
+      "description": "Builds ONLY the PC simulator executable and its dependencies",
+      "targets": ["cocoui_simulator"]
+    },
+    {
+      "name": "build-core",
+      "configurePreset": "windows-clang",
+      "displayName": "Build Core Library",
+      "description": "Builds ONLY the core framework to check for C++14 errors",
+      "targets": ["cocoui_core"]
+    },
+    {
+      "name": "format-code",
+      "configurePreset": "windows-clang",
+      "displayName": "Run Clang-Format",
+      "description": "Formats all C++ code in the project",
+      "targets": ["format"]
+    }
+  ]
+}

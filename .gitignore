@@ -1,0 +1,46 @@
+# ==============================================================================
+# CocoUI Git Ignore Structure
+# ==============================================================================
+
+# --- Compiled Binaries & Build Artifacts ---
+/build/
+/out/
+*.exe
+*.elf
+*.bin
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+
+# --- CMake Generated Files ---
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+_deps/
+
+# --- IDEs & Editors ---
+# Visual Studio Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+.history/
+
+# Visual Studio
+.vs/
+*.user
+*.sln
+*.vcxproj
+*.filters
+
+# --- OS Specific ---
+Thumbs.db
+Desktop.ini
+.DS_Store
+
