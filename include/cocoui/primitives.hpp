@@ -6,7 +6,7 @@
  * See the LICENSE file in the project root for full license information.
  * SPDX-License-Identifier: Zlib
  */
- 
+
 #pragma once
 
 #include <cstdint>
@@ -34,7 +34,9 @@ struct Color {
         : r((hex >> 16) & 0xFF), g((hex >> 8) & 0xFF), b(hex & 0xFF), a((hex >> 24) & 0xFF) {}
 
     // Helper to convert to a 32-bit integer (useful for Raylib and Framebuffers)
-    [[nodiscard]] constexpr auto to_hex() const -> uint32_t { return (a << 24) | (r << 16) | (g << 8) | b; }
+    [[nodiscard]] constexpr auto to_hex() const -> uint32_t {
+        return (a << 24) | (r << 16) | (g << 8) | b;
+    }
 };
 
 // Standard predefined colors computed at compile-time
@@ -76,7 +78,7 @@ struct Rect {
     Point origin;
     Size size;
 
-    constexpr Rect()  = default;
+    constexpr Rect() = default;
     constexpr Rect(int16_t x, int16_t y, int16_t w, int16_t h) : origin(x, y), size(w, h) {}
     constexpr Rect(Point p, Size s) : origin(p), size(s) {}
 
@@ -94,7 +96,7 @@ struct Rect {
     // Checks if two rectangles overlap (useful for Dirty Rectangles rendering)
     [[nodiscard]] constexpr auto intersects(const Rect& other) const -> bool {
         return other.left() < right() && other.right() > left() && other.top() < bottom() &&
-                 other.bottom() > top();
+               other.bottom() > top();
     }
 };
 }  // namespace cocoui

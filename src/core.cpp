@@ -6,7 +6,7 @@
  * See the LICENSE file in the project root for full license information.
  * SPDX-License-Identifier: Zlib
  */
- 
+
 #include "cocoui/framebuffer.hpp"
 
 namespace cocoui {

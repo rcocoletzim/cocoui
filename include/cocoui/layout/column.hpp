@@ -13,37 +13,44 @@
 #include <utility>
 
 #include "cocoui/primitives.hpp"
+#include "cocoui/widget.hpp"
 
 namespace cocoui {
 
 template <typename... Children>
-class Column {
+class Column : public Widget {  // <--- Herencia pública para ganar la API Fluida
    private:
     // The entire UI subtree is stored completely flat in memory
     std::tuple<Children...> children_;
 
     // Compile-time recursion helper for C++14 using the "Dummy Array Trick"
-    template <std::size_t... Indices>
-    void draw_impl(Framebuffer& fb, const Rect& bounds, std::index_sequence<Indices...>) const {
-        // This array only exists to force the compiler to expand the parameter pack
+    template <typename FB, std::size_t... Indices>
+    void draw_impl(FB& fb, const Rect& parent_bounds, std::index_sequence<Indices...>) const {
         using expander = int[];
 
-        // We unpack the tuple. For now, we just stack them vertically with a fixed height.
-        // In a complete layout engine, we would compute sizes dynamically.
-        (void)expander{0, (std::get<Indices>(children_).draw(
-                               fb, Rect(bounds.origin.x, bounds.origin.y + (Indices * 40),
-                                        bounds.size.width, 40)),
-                           0)...};
+        // Calculate absolute position of this column based on its parent
+        int16_t abs_x = parent_bounds.origin.x + bounds_.origin.x;
+        int16_t abs_y = parent_bounds.origin.y + bounds_.origin.y;
+        int16_t w = bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width;
+
+        // Unpack tuple and draw each child.
+        // For now, we hardcode a 40px height per child for testing.
+        (void)expander{0,
+                       (std::get<Indices>(children_).draw(
+                            fb, Rect(abs_x, abs_y + (static_cast<int16_t>(Indices) * 40), w, 40)),
+                        0)...};
     }
 
    public:
     // Constructor moves the children into the tuple
     constexpr explicit Column(Children... children) : children_(std::move(children)...) {}
 
-    // Public draw interface
-    void draw(Framebuffer& fb, const Rect& bounds) const {
+    // Public draw interface (Static Polymorphism)
+    template <typename FB>
+    void draw(FB& fb, const Rect& parent_bounds) const {
+        if (!is_visible_) return;
         // Generate a compile-time sequence (0, 1, 2, ..., N-1) to iterate the tuple
-        draw_impl(fb, bounds, std::index_sequence_for<Children...>{});
+        draw_impl(fb, parent_bounds, std::index_sequence_for<Children...>{});
     }
 };
 

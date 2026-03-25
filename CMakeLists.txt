@@ -16,9 +16,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # -- CLANG-TIDY INTEGRATION --
 find_program(CLANG_TIDY_EXE NAMES clang-tidy)
 if(CLANG_TIDY_EXE)
-    message(STATUS "Found clang-tidy: ${CLANG_TIDY_EXE}")
-    # This automatically runs clang-tidy every time you compile a target
-    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-fix") 
+    message(STATUS "Found clang-tidy: ${CLANG_TIDY_EXE}") 
 else()
     message(WARNING "clang-tidy not found! Static analysis will be disabled.")
 endif()
@@ -65,6 +63,10 @@ target_include_directories(cocoui_core PUBLIC include)
 
 # Force strict C++14 for the core framework (Microcontroller compatibility)
 target_compile_features(cocoui_core PUBLIC cxx_std_14)
+
+if(CLANG_TIDY_EXE)
+    set_target_properties(cocoui_core PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-fix")
+endif()
 
 # ==============================================================================
 # 4. PC SIMULATOR (Target: Desktop / Debugging)

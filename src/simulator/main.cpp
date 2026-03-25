@@ -6,74 +6,68 @@
  * See the LICENSE file in the project root for full license information.
  * SPDX-License-Identifier: Zlib
  */
- 
+
 #include <raylib.h>
+
 #include <iostream>
-#include "cocoui/primitives.hpp"
+
 #include "cocoui/framebuffer.hpp"
+#include "cocoui/layout/column.hpp"
+#include "cocoui/primitives.hpp"
+#include "cocoui/widget.hpp"
+#include "cocoui/widgets/solid_color.hpp"
 
-// We avoid 'using namespace cocoui' to prevent name collisions with Raylib
-// Instead, we use specific aliases or prefix with 'cocoui::'
-
-// Simulator Constants with descriptive names to avoid "magic numbers" warnings
 constexpr int16_t kSimWidth = 320;
 constexpr int16_t kSimHeight = 240;
-constexpr float kPcScale = 2.0F; 
+constexpr float kPcScale = 2.0F;
 
-/**
- * @brief Maps CocoUI Color to Raylib Hardware Hex (RGBA)
- */
 constexpr auto color_to_raylib_hex(const cocoui::Color& color) -> uint32_t {
-    return (static_cast<uint32_t>(color.a) << 24) | 
-           (static_cast<uint32_t>(color.b) << 16) | 
-           (static_cast<uint32_t>(color.g) << 8)  | 
-            static_cast<uint32_t>(color.r);
+    return (static_cast<uint32_t>(color.a) << 24) | (static_cast<uint32_t>(color.b) << 16) |
+           (static_cast<uint32_t>(color.g) << 8) | static_cast<uint32_t>(color.r);
 }
 
 auto main() -> int {
     std::cout << "[Simulator] Booting CocoUI Hardware Abstraction Layer...\n";
 
-    InitWindow(static_cast<int>(kSimWidth * kPcScale), 
-               static_cast<int>(kSimHeight * kPcScale), 
+    InitWindow(static_cast<int>(kSimWidth * kPcScale), static_cast<int>(kSimHeight * kPcScale),
                "CocoUI - Hardware Simulator");
     SetTargetFPS(60);
 
-    // 1. GPU Texture setup
-    // Explicitly use ::Color to tell Clang we want Raylib's Color struct here
     ::Image dummy_image = GenImageColor(kSimWidth, kSimHeight, ::BLANK);
     Texture2D display_texture = LoadTextureFromImage(dummy_image);
-    UnloadImage(dummy_image); 
+    UnloadImage(dummy_image);
 
-    // 2. CocoUI Framebuffer 
-    // Explicitly using cocoui::PixelFormat to avoid collision with Raylib's
     cocoui::Framebuffer<kSimWidth, kSimHeight, cocoui::PixelFormat::ARGB8888> framebuffer;
 
-    while (!WindowShouldClose()) {
-        // --- A. INPUT ---
-        auto touch_x = static_cast<int16_t>(GetMouseX() / kPcScale);
-        auto touch_y = static_cast<int16_t>(GetMouseY() / kPcScale);
-        bool is_touching = IsMouseButtonDown(MOUSE_BUTTON_LEFT);
+    // =========================================================================
+    // 🎨 DECLARATIVE UI DEFINITION (Zero-Allocation Scene Graph)
+    // =========================================================================
+    // This entire UI tree is constructed at compile-time/stack. No heap used!
+    auto app_ui = cocoui::make_column(cocoui::make_solid_color(cocoui::Colors::Red),
+                                      cocoui::make_solid_color(cocoui::Colors::Green),
+                                      cocoui::make_solid_color(cocoui::Colors::Blue));
 
-        // --- B. RENDERING ---
-        // Clear background (Dark Gray)
+    // Fluent API: Position the column with a 10px margin
+    app_ui.bounds(cocoui::Rect(10, 10, kSimWidth - 20, kSimHeight - 20));
+
+    // =========================================================================
+
+    while (!WindowShouldClose()) {
+        // --- RENDERING ---
+        // 1. Clear background
         framebuffer.clear(color_to_raylib_hex(cocoui::Color(30, 30, 30)));
 
-        // Top Bar
-        framebuffer.fill_rect(cocoui::Rect(0, 0, kSimWidth, 30), 
-                              color_to_raylib_hex(cocoui::Colors::Blue));
+        // 2. Draw the entire Scene Graph recursively with a single call
+        app_ui.draw(framebuffer, cocoui::Rect(0, 0, kSimWidth, kSimHeight));
 
-        // Interactive Red Square
-        if (is_touching) {
-            framebuffer.fill_rect(cocoui::Rect(touch_x - 20, touch_y - 20, 40, 40), 
-                                  color_to_raylib_hex(cocoui::Colors::Red));
-        }
-
-        // --- C. DISPLAY UPDATE ---
+        // --- DISPLAY UPDATE ---
         UpdateTexture(display_texture, framebuffer.data());
 
         BeginDrawing();
-            ClearBackground(::BLACK); // Use :: to refer to Raylib's global macro
-            DrawTextureEx(display_texture, {.x=0.0F, .y=0.0F}, 0.0F, kPcScale, ::WHITE);
+        ClearBackground(::BLACK);
+        // Note: Designated initializers {.x=0, .y=0} are C++20, Raylib expects a struct in C++14
+        Vector2 origin = {0.0F, 0.0F};
+        DrawTextureEx(display_texture, origin, 0.0F, kPcScale, ::WHITE);
         EndDrawing();
     }
 

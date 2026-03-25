@@ -6,7 +6,7 @@
  * See the LICENSE file in the project root for full license information.
  * SPDX-License-Identifier: Zlib
  */
- 
+
 #pragma once
 
 #include <algorithm>
@@ -52,7 +52,7 @@ class Framebuffer {
 
    public:
     // Ensure the buffer is zeroed out at startup without runtime cost
-    constexpr Framebuffer()  = default;
+    constexpr Framebuffer() = default;
 
     // ========================================================================
     // HARDWARE / DRIVER INTERFACE
@@ -60,7 +60,9 @@ class Framebuffer {
 
     [[nodiscard]] constexpr auto data() const noexcept -> const PixelType* { return data_; }
 
-    [[nodiscard]] constexpr auto size_bytes() const noexcept -> std::size_t { return buffer_size_bytes; }
+    [[nodiscard]] constexpr auto size_bytes() const noexcept -> std::size_t {
+        return buffer_size_bytes;
+    }
 
     // ========================================================================
     // DRAWING OPERATIONS
