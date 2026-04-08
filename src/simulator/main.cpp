@@ -1,12 +1,3 @@
-/*
- * CocoUI Framework (https://github.com/rcocoletzim/cocoui)
- * Copyright (c) 2026 Rubén Cocoletzi Mata
- *
- * This software is provided 'as-is', under the terms of the zlib/libpng license.
- * See the LICENSE file in the project root for full license information.
- * SPDX-License-Identifier: Zlib
- */
-
 #include <raylib.h>
 
 #include <iostream>
@@ -15,6 +6,7 @@
 #include "cocoui/layout/column.hpp"
 #include "cocoui/primitives.hpp"
 #include "cocoui/widget.hpp"
+#include "cocoui/widgets/button.hpp"  
 #include "cocoui/widgets/solid_color.hpp"
 
 constexpr int16_t kSimWidth = 320;
@@ -27,10 +19,9 @@ constexpr auto color_to_raylib_hex(const cocoui::Color& color) -> uint32_t {
 }
 
 auto main() -> int {
-    std::cout << "[Simulator] Booting CocoUI Hardware Abstraction Layer...\n";
-
+    std::cout << "[Simulator] Booting CocoUI...\n";
     InitWindow(static_cast<int>(kSimWidth * kPcScale), static_cast<int>(kSimHeight * kPcScale),
-               "CocoUI - Hardware Simulator");
+               "CocoUI Simulator");
     SetTargetFPS(60);
 
     ::Image dummy_image = GenImageColor(kSimWidth, kSimHeight, ::BLANK);
@@ -39,35 +30,38 @@ auto main() -> int {
 
     cocoui::Framebuffer<kSimWidth, kSimHeight, cocoui::PixelFormat::ARGB8888> framebuffer;
 
-    // =========================================================================
-    // 🎨 DECLARATIVE UI DEFINITION (Zero-Allocation Scene Graph)
-    // =========================================================================
-    // This entire UI tree is constructed at compile-time/stack. No heap used!
-    auto app_ui = cocoui::make_column(cocoui::make_solid_color(cocoui::Colors::Red),
-                                      cocoui::make_solid_color(cocoui::Colors::Green),
-                                      cocoui::make_solid_color(cocoui::Colors::Blue));
-
-    // Fluent API: Position the column with a 10px margin
-    app_ui.bounds(cocoui::Rect(10, 10, kSimWidth - 20, kSimHeight - 20));
-
-    // =========================================================================
+    cocoui::Color interactive_color = cocoui::Colors::Red;
 
     while (!WindowShouldClose()) {
-        // --- RENDERING ---
-        // 1. Clear background
-        framebuffer.clear(color_to_raylib_hex(cocoui::Color(30, 30, 30)));
+        auto touch_x = static_cast<int16_t>(GetMouseX() / kPcScale);
+        auto touch_y = static_cast<int16_t>(GetMouseY() / kPcScale);
+        bool is_clicked = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
 
-        // 2. Draw the entire Scene Graph recursively with a single call
+        auto app_ui = cocoui::make_column(
+            cocoui::make_button(cocoui::make_solid_color(interactive_color),  // Apariencia visual
+                                [&interactive_color]() {  // Acción: Función Lambda
+                                    if (interactive_color.r == 255) {
+                                        interactive_color = cocoui::Colors::Blue;
+                                    } else {
+                                        interactive_color = cocoui::Colors::Red;
+                                    }
+                                }),
+            cocoui::make_solid_color(cocoui::Colors::Green));
+        app_ui.bounds(cocoui::Rect(10, 10, kSimWidth - 20, kSimHeight - 20));
+
+        if (is_clicked) {
+            // El motor busca qué fue tocado y ejecuta la Lambda correcta
+            app_ui.handle_touch(cocoui::Point(touch_x, touch_y),
+                                cocoui::Rect(0, 0, kSimWidth, kSimHeight));
+        }
+
+        framebuffer.clear(color_to_raylib_hex(cocoui::Color(30, 30, 30)));
         app_ui.draw(framebuffer, cocoui::Rect(0, 0, kSimWidth, kSimHeight));
 
-        // --- DISPLAY UPDATE ---
         UpdateTexture(display_texture, framebuffer.data());
-
         BeginDrawing();
         ClearBackground(::BLACK);
-        // Note: Designated initializers {.x=0, .y=0} are C++20, Raylib expects a struct in C++14
-        Vector2 origin = {0.0F, 0.0F};
-        DrawTextureEx(display_texture, origin, 0.0F, kPcScale, ::WHITE);
+        DrawTextureEx(display_texture, {0.0F, 0.0F}, 0.0F, kPcScale, ::WHITE);
         EndDrawing();
     }
 

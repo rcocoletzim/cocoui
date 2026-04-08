@@ -47,11 +47,17 @@ class SolidColor : public Widget {
 
         fb.fill_rect(absolute_bounds, color_.to_hex());
     }
+
+    bool handle_touch(Point /*p*/, const Rect& /*parent_bounds*/) {
+    return false;
+}
 };
 
 // Factory helper for C++14
 constexpr SolidColor make_solid_color(Color c) {
     return SolidColor(c);
 }
+
+
 
 }  // namespace cocoui

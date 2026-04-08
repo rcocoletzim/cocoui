@@ -41,6 +41,23 @@ class Column : public Widget {  // <--- Herencia pública para ganar la API Flui
                         0)...};
     }
 
+    template <std::size_t... Indices>
+    bool handle_touch_impl(Point p, const Rect& parent_bounds, std::index_sequence<Indices...>) {
+        int16_t abs_x = parent_bounds.origin.x + bounds_.origin.x;
+        int16_t abs_y = parent_bounds.origin.y + bounds_.origin.y;
+        int16_t w = bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width;
+
+        bool handled = false;
+        using expander = int[];
+
+        (void)expander{
+            0, (handled ? 0
+                        : (handled = std::get<Indices>(children_).handle_touch(
+                               p, Rect(abs_x, abs_y + (static_cast<int16_t>(Indices) * 40), w, 40)),
+                           0))...};
+        return handled;
+    }
+
    public:
     // Constructor moves the children into the tuple
     constexpr explicit Column(Children... children) : children_(std::move(children)...) {}
@@ -51,6 +68,11 @@ class Column : public Widget {  // <--- Herencia pública para ganar la API Flui
         if (!is_visible_) return;
         // Generate a compile-time sequence (0, 1, 2, ..., N-1) to iterate the tuple
         draw_impl(fb, parent_bounds, std::index_sequence_for<Children...>{});
+    }
+
+    bool handle_touch(Point p, const Rect& parent_bounds) {
+        if (!is_visible_) return false;
+        return handle_touch_impl(p, parent_bounds, std::index_sequence_for<Children...>{});
     }
 };
 
