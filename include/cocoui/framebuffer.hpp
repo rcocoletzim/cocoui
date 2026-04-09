@@ -108,6 +108,39 @@ class Framebuffer {
             std::fill(row_ptr, row_ptr + row_width, color_value);
         }
     }
+
+    /**
+     * @brief Draws a raw bitmap directly from memory (Flash/ROM) with clipping support.
+     */
+    void draw_image(Point dest, const PixelType* src_data, Size src_size) noexcept {
+        // 1. Clipping: Calculate the visible intersection with the screen boundaries
+        int16_t x_start = std::max(static_cast<int16_t>(0), dest.x);
+        int16_t y_start = std::max(static_cast<int16_t>(0), dest.y);
+        int16_t x_end = std::min(width, static_cast<int16_t>(dest.x + src_size.width));
+        int16_t y_end = std::min(height, static_cast<int16_t>(dest.y + src_size.height));
+
+        // 2. Early exit if the image is completely off-screen
+        if (x_start >= x_end || y_start >= y_end) {
+            return;
+        }
+
+        // 3. Pixel-by-pixel rendering
+        for (int16_t y = y_start; y < y_end; ++y) {
+            int16_t src_y = y - dest.y;
+            for (int16_t x = x_start; x < x_end; ++x) {
+                int16_t src_x = x - dest.x;
+
+                PixelType pixel = src_data[(src_y * src_size.width) + src_x];
+
+                // Alpha Test: If the pixel is not completely transparent (Alpha > 0), draw it.
+                // Note: >> 24 assumes ARGB8888 format for the PC simulator. 
+                // In hardware, this will be abstracted to handle RGB565 color keying.
+                if ((pixel >> 24) & 0xFF) {
+                    data_[(y * width) + x] = pixel;
+                }
+            }
+        }
+    }
 };
 
 }  // namespace cocoui

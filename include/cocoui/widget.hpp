@@ -17,6 +17,7 @@ namespace cocoui {
  * @brief Base state for all UI elements.
  * Uses CRTP/Static Polymorphism instead of virtual methods for zero-overhead.
  */
+ template <typename Derived>
 class Widget {
    protected:
     Rect bounds_{0, 0, 0, 0};
@@ -26,24 +27,24 @@ class Widget {
     constexpr Widget() = default;
     constexpr explicit Widget(const Rect& bounds) : bounds_(bounds) {}
 
-    constexpr Widget& at(Point origin) noexcept {
+    constexpr Derived& at(Point origin) noexcept {
         bounds_.origin = origin;
-        return *this;
+        return static_cast<Derived&>(*this);
     }
 
-    constexpr Widget& size(Size s) noexcept {
+    constexpr Derived& size(Size s) noexcept {
         bounds_.size = s;
-        return *this;
+        return static_cast<Derived&>(*this);
     }
 
-    constexpr Widget& bounds(const Rect& r) noexcept {
+    constexpr Derived& bounds(const Rect& r) noexcept {
         bounds_ = r;
-        return *this;
+        return static_cast<Derived&>(*this);
     }
 
-    constexpr Widget& visible(bool v) noexcept {
+    constexpr Derived& visible(bool v) noexcept {
         is_visible_ = v;
-        return *this;
+        return static_cast<Derived&>(*this);
     }
 
     [[nodiscard]] constexpr const Rect& get_bounds() const noexcept { return bounds_; }

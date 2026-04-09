@@ -18,7 +18,7 @@ template <int16_t W, int16_t H, typename P>
 class Framebuffer;
 
 // A primitive widget that simply fills its assigned area with a color
-class SolidColor : public Widget {
+class SolidColor : public Widget<SolidColor> {
    private:
     Color color_;
 

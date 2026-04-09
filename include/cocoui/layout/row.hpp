@@ -18,7 +18,7 @@
 namespace cocoui {
 
 template <typename... Children>
-class Row : public Widget {
+class Row : public Widget<Row<Children...>> {
    private:
     // The entire UI subtree is stored completely flat in memory (Stack/Flash)
     std::tuple<Children...> children_;

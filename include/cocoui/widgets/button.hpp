@@ -13,7 +13,7 @@
 namespace cocoui {
 
 template <typename Visual, typename Callback>
-class Button : public Widget {
+class Button : public Widget<Button<Visual, Callback>> {
    private:
     Visual visual_;
     Callback on_click_;
