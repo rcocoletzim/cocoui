@@ -39,10 +39,6 @@ class Image : public Widget<Image> {
         fb.draw_image(Point(abs_x, abs_y), bitmap_.data, bitmap_.size);
     }
 
-    // A static image does not consume touch events
-    bool handle_touch(Point /*p*/, const Rect& /*parent_bounds*/) {
-        return false;
-    }
 };
 
 // Factory helper for automatic type deduction

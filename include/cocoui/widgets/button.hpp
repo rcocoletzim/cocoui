@@ -7,45 +7,47 @@
 
 #include <utility>
 
+#include "cocoui/mixins/touchable.hpp"
 #include "cocoui/primitives.hpp"
 #include "cocoui/widget.hpp"
 
 namespace cocoui {
 
+// Button inherits both Layout capabilities (Widget) and Event capabilities (Touchable)
 template <typename Visual, typename Callback>
-class Button : public Widget<Button<Visual, Callback>> {
+class Button : public Widget<Button<Visual, Callback>>, 
+               public Touchable<Callback> {
    private:
     Visual visual_;
-    Callback on_click_;
 
    public:
     constexpr explicit Button(Visual visual, Callback on_click)
-        : visual_(std::move(visual)), on_click_(std::move(on_click)) {}
+        : Widget<Button<Visual, Callback>>(),
+          Touchable<Callback>(std::move(on_click)), 
+          visual_(std::move(visual)) {}
 
     template <typename FB>
     void draw(FB& fb, const Rect& parent_bounds) const {
-        if (!is_visible_) return;
+        if (!this->is_visible_) return;
         
         Rect absolute_bounds(
-            parent_bounds.origin.x + bounds_.origin.x, parent_bounds.origin.y + bounds_.origin.y,
-            bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width,
-            bounds_.size.height > 0 ? bounds_.size.height : parent_bounds.size.height);
+            parent_bounds.origin.x + this->bounds_.origin.x, parent_bounds.origin.y + this->bounds_.origin.y,
+            this->bounds_.size.width > 0 ? this->bounds_.size.width : parent_bounds.size.width,
+            this->bounds_.size.height > 0 ? this->bounds_.size.height : parent_bounds.size.height);
+        
         visual_.draw(fb, absolute_bounds);
     }
 
+    // Required by the SFINAE dispatcher. Delegates hit-testing to the Mixin.
     bool handle_touch(Point p, const Rect& parent_bounds) {
-        if (!is_visible_) return false;
+        if (!this->is_visible_) return false;
 
         Rect absolute_bounds(
-            parent_bounds.origin.x + bounds_.origin.x, parent_bounds.origin.y + bounds_.origin.y,
-            bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width,
-            bounds_.size.height > 0 ? bounds_.size.height : parent_bounds.size.height);
+            parent_bounds.origin.x + this->bounds_.origin.x, parent_bounds.origin.y + this->bounds_.origin.y,
+            this->bounds_.size.width > 0 ? this->bounds_.size.width : parent_bounds.size.width,
+            this->bounds_.size.height > 0 ? this->bounds_.size.height : parent_bounds.size.height);
 
-        if (absolute_bounds.contains(p)) {
-            on_click_();  
-            return true;  
-        }
-        return false;
+        return this->process_touch(p, absolute_bounds);
     }
 };
 

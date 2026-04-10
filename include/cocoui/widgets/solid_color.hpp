@@ -48,9 +48,7 @@ class SolidColor : public Widget<SolidColor> {
         fb.fill_rect(absolute_bounds, color_.to_hex());
     }
 
-    bool handle_touch(Point /*p*/, const Rect& /*parent_bounds*/) {
-    return false;
-}
+    
 };
 
 // Factory helper for C++14

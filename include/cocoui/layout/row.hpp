@@ -14,6 +14,7 @@
 
 #include "cocoui/primitives.hpp"
 #include "cocoui/widget.hpp"
+#include "cocoui/events.hpp"
 
 namespace cocoui {
 
@@ -41,6 +42,24 @@ class Row : public Widget<Row<Children...>> {
                        (std::get<Indices>(children_).draw(
                             fb, Rect(abs_x + (static_cast<int16_t>(Indices) * 40), abs_y, 40, h)),
                         0)...};
+    }
+
+    template <std::size_t... Indices>
+    bool handle_touch_impl(Point p, const Rect& parent_bounds, std::index_sequence<Indices...>) {
+        int16_t abs_x = parent_bounds.origin.x + bounds_.origin.x;
+        int16_t abs_y = parent_bounds.origin.y + bounds_.origin.y;
+        int16_t w = bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width;
+
+        bool handled = false;
+        using expander = int[];
+
+       // We now use dispatch_touch! If the child has no handle_touch, it safely returns false at compile-time.
+        (void)expander{
+            0, (handled ? 0
+                        : (handled = cocoui::dispatch_touch(std::get<Indices>(children_),
+                               p, Rect(canvas_abs_x, canvas_abs_y, canvas_w, canvas_h)),
+                           0))...};
+        return handled;
     }
 
    public:

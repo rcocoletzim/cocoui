@@ -14,6 +14,7 @@
 
 #include "cocoui/primitives.hpp"
 #include "cocoui/widget.hpp"
+#include "cocoui/events.hpp"
 
 namespace cocoui {
 
@@ -50,10 +51,11 @@ class Column : public Widget<Column<Children...>> {  // <--- Herencia pública p
         bool handled = false;
         using expander = int[];
 
+       // We now use dispatch_touch! If the child has no handle_touch, it safely returns false at compile-time.
         (void)expander{
             0, (handled ? 0
-                        : (handled = std::get<Indices>(children_).handle_touch(
-                               p, Rect(abs_x, abs_y + (static_cast<int16_t>(Indices) * 40), w, 40)),
+                        : (handled = cocoui::dispatch_touch(std::get<Indices>(children_),
+                               p, Rect(canvas_abs_x, canvas_abs_y, canvas_w, canvas_h)),
                            0))...};
         return handled;
     }

@@ -14,28 +14,28 @@
 
 #include "cocoui/primitives.hpp"
 #include "cocoui/widget.hpp"
+#include "cocoui/events.hpp"
 
 namespace cocoui {
 
 template <typename... Children>
 class Canvas : public Widget<Canvas<Children...>> {
    private:
-    // La tupla mágica que guarda todo en Stack/Flash
+    // Tuple saves all in stack/flash
     std::tuple<Children...> children_;
 
     template <typename FB, std::size_t... Indices>
     void draw_impl(FB& fb, const Rect& parent_bounds, std::index_sequence<Indices...>) const {
         using expander = int[];
 
-        // Calculamos la posición absoluta del Canvas en la pantalla
+        // absolute position of canves in screen
         int16_t canvas_abs_x = parent_bounds.origin.x + bounds_.origin.x;
         int16_t canvas_abs_y = parent_bounds.origin.y + bounds_.origin.y;
         
         int16_t canvas_w = bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width;
         int16_t canvas_h = bounds_.size.height > 0 ? bounds_.size.height : parent_bounds.size.height;
 
-        // Dibujamos a los hijos. Le pasamos el rectángulo del Canvas como su "padre".
-        // Cada hijo sumará su propio offset .at() a estas coordenadas base.
+
         (void)expander{0,
                        (std::get<Indices>(children_).draw(
                             fb, Rect(canvas_abs_x, canvas_abs_y, canvas_w, canvas_h)),
@@ -53,10 +53,10 @@ class Canvas : public Widget<Canvas<Children...>> {
         bool handled = false;
         using expander = int[];
 
-        // Propagamos el clic. Si un hijo lo consume, detenemos la búsqueda.
+       // We now use dispatch_touch! If the child has no handle_touch, it safely returns false at compile-time.
         (void)expander{
             0, (handled ? 0
-                        : (handled = std::get<Indices>(children_).handle_touch(
+                        : (handled = cocoui::dispatch_touch(std::get<Indices>(children_),
                                p, Rect(canvas_abs_x, canvas_abs_y, canvas_w, canvas_h)),
                            0))...};
         return handled;
