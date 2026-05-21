@@ -14,7 +14,7 @@
 #include <cstdint>
 
 #include "cocoui/primitives.hpp"
-
+#include "cocoui/hal/display_driver.hpp"
 namespace cocoui {
 
 // ============================================================================
@@ -50,9 +50,15 @@ class Framebuffer {
     // boundaries (typically 32 bytes) for safe and fast DMA (Direct Memory Access) transfers.
     alignas(32) PixelType data_[pixel_count]{0};
 
+    Rect clip_rect_{0, 0, Width, Height};
+
    public:
     // Ensure the buffer is zeroed out at startup without runtime cost
     constexpr Framebuffer() = default;
+
+    // Clipping controls
+    constexpr void set_clip(const Rect& r) noexcept { clip_rect_ = r; }
+    constexpr void reset_clip() noexcept { clip_rect_ = Rect(0, 0, width, height); }
 
     // ========================================================================
     // HARDWARE / DRIVER INTERFACE
@@ -64,6 +70,15 @@ class Framebuffer {
         return buffer_size_bytes;
     }
 
+    /**
+     * @brief Sends the entire Framebuffer memory to the active display driver.
+     * * @param driver A reference to the hardware-specific driver implementation.
+     */
+    void flush(hal::DisplayDriver<PixelType>& driver) const noexcept {
+        // Send the full screen dimensions and the pointer to our aligned memory block
+        driver.flush_area(clip_rect_, data_);
+    }
+
     // ========================================================================
     // DRAWING OPERATIONS
     // ========================================================================
@@ -73,7 +88,7 @@ class Framebuffer {
      * Uses std::fill which the compiler lowers to highly optimized assembly (memset).
      */
     void clear(PixelType color_value) noexcept {
-        std::fill(data_, data_ + pixel_count, color_value);
+        fill_rect(clip_rect_, color_value);
     }
 
     /**
@@ -90,21 +105,16 @@ class Framebuffer {
      * Includes mathematical clipping to ensure no out-of-bounds memory writes occur.
      */
     void fill_rect(const Rect& rect, PixelType color_value) noexcept {
-        // 1. Clipping: Calculate the visible intersection with the screen
-        const int16_t x_start = std::max(static_cast<int16_t>(0), rect.left());
-        const int16_t y_start = std::max(static_cast<int16_t>(0), rect.top());
-        const int16_t x_end = std::min(width, rect.right());
-        const int16_t y_end = std::min(height, rect.bottom());
+        // 1. Intersect requested rect with the allowed Clip Rect
+        Rect target = rect.intersection(clip_rect_);
+        
+        // 2. Early exit if nothing to draw
+        if (target.size.width <= 0 || target.size.height <= 0) return;
 
-        // 2. Early exit if the rectangle is completely off-screen
-        if (x_start >= x_end || y_start >= y_end) {
-            return;
-        }
-
-        // 3. Row-by-row rendering (Cache-friendly)
-        const int16_t row_width = x_end - x_start;
-        for (int16_t y = y_start; y < y_end; ++y) {
-            PixelType* row_ptr = &data_[(y * width) + x_start];
+        // 3. Row-by-row rendering
+        const int16_t row_width = target.size.width;
+        for (int16_t y = target.top(); y < target.bottom(); ++y) {
+            PixelType* row_ptr = &data_[(y * width) + target.left()];
             std::fill(row_ptr, row_ptr + row_width, color_value);
         }
     }
@@ -137,6 +147,36 @@ class Framebuffer {
                 // In hardware, this will be abstracted to handle RGB565 color keying.
                 if ((pixel >> 24) & 0xFF) {
                     data_[(y * width) + x] = pixel;
+                }
+            }
+        }
+    }
+
+    /**
+     * @brief Draws a monochrome (1-bit per pixel) glyph. 
+     * Assumes widths up to 8 pixels (1 byte per row) for simplicity in this version.
+     */
+    void draw_glyph(Point dest, const uint8_t* glyph_data, uint8_t glyph_width, uint8_t glyph_height, PixelType color_value) noexcept {
+        // 1. Clipping boundaries
+        int16_t x_start = std::max(static_cast<int16_t>(0), dest.x);
+        int16_t y_start = std::max(static_cast<int16_t>(0), dest.y);
+        int16_t x_end = std::min(width, static_cast<int16_t>(dest.x + glyph_width));
+        int16_t y_end = std::min(height, static_cast<int16_t>(dest.y + glyph_height));
+
+        if (x_start >= x_end || y_start >= y_end) return;
+
+        // 2. Decode the 1-bit mask and draw
+        for (int16_t y = y_start; y < y_end; ++y) {
+            int16_t src_y = y - dest.y;
+            // Grab the row mask (1 byte = 8 pixels)
+            uint8_t row_mask = glyph_data[src_y];
+            
+            for (int16_t x = x_start; x < x_end; ++x) {
+                int16_t src_x = x - dest.x;
+                
+                // Read bits from MSB (Most Significant Bit) to LSB (Left to Right)
+                if (row_mask & (1 << (7 - src_x))) {
+                    data_[(y * width) + x] = color_value;
                 }
             }
         }

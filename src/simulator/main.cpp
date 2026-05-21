@@ -12,20 +12,41 @@
 #include "cocoui/widget.hpp"
 #include "cocoui/widgets/button.hpp"  
 #include "cocoui/widgets/solid_color.hpp"
-#include "cocoui/widgets/image.hpp" // <--- Include the new Image widget
+#include "cocoui/widgets/image.hpp"
+
+// Include our new Hardware Abstraction Layer
+#include "cocoui/hal/display_driver.hpp"
 
 constexpr int16_t kSimWidth = 320;
 constexpr int16_t kSimHeight = 240;
 constexpr float kPcScale = 2.0F;
 
 // ============================================================================
-// SIMULATED FLASH ASSETS (ROM)
+// RAYLIB FAKE HARDWARE DRIVER
 // ============================================================================
-constexpr uint32_t T = 0x00000000; // Transparent
-constexpr uint32_t Y = 0xFFFFD700; // Yellow
-constexpr uint32_t B = 0xFF000000; // Black
+// This class implements our HAL contract. The CocoUI engine will talk to this
+// class without knowing it is actually interacting with a PC GPU via Raylib.
+class RaylibDriver : public cocoui::hal::DisplayDriver<uint32_t> {
+   private:
+    Texture2D& texture_;
 
-// An 8x8 pixel art smiley face
+   public:
+    explicit RaylibDriver(Texture2D& tex) : texture_(tex) {}
+
+    // The engine calls this when it's time to send pixels to the screen
+    void flush_area(const cocoui::Rect& /*area*/, const uint32_t* color_data) override {
+        // In a real embedded system (SPI/DMA), you would use the 'area' parameter 
+        // to only send a specific subset of pixels to the display controller.
+        // For the PC simulator, we simply update the entire GPU texture.
+        UpdateTexture(texture_, color_data);
+    }
+};
+// ============================================================================
+
+// Simulated Flash Asset
+constexpr uint32_t T = 0x00000000;
+constexpr uint32_t Y = 0xFFFFD700;
+constexpr uint32_t B = 0xFF000000;
 const uint32_t smiley_data[64] = {
     T, T, Y, Y, Y, Y, T, T,
     T, Y, Y, Y, Y, Y, Y, T,
@@ -38,7 +59,6 @@ const uint32_t smiley_data[64] = {
 };
 
 const cocoui::Bitmap smiley_asset = { cocoui::Size(8, 8), smiley_data };
-// ============================================================================
 
 constexpr auto color_to_raylib_hex(const cocoui::Color& color) -> uint32_t {
     return (static_cast<uint32_t>(color.a) << 24) | (static_cast<uint32_t>(color.b) << 16) |
@@ -55,44 +75,75 @@ auto main() -> int {
     Texture2D display_texture = LoadTextureFromImage(dummy_image);
     UnloadImage(dummy_image);
 
+    // 1. Initialize Framebuffer (Software Memory)
     cocoui::Framebuffer<kSimWidth, kSimHeight, cocoui::PixelFormat::ARGB8888> framebuffer;
+    
+    // ... [setup raylib and framebuffer] ...
+    RaylibDriver driver(display_texture);
     cocoui::Color interactive_color = cocoui::Colors::Red;
+
+    // --- INITIAL FULL DRAW (Done once) ---
+    auto app_ui = cocoui::make_canvas(
+        cocoui::make_button(
+            cocoui::make_solid_color(interactive_color), 
+            [&interactive_color]() {
+                interactive_color = (interactive_color.r == 255) ? cocoui::Colors::Blue : cocoui::Colors::Red;
+            }
+        ).at({100, 100}).size({120, 40}), 
+        cocoui::make_solid_color(cocoui::Colors::Green).at({10, 190}).size({40, 40})
+    );
+    app_ui.bounds(cocoui::Rect(0, 0, kSimWidth, kSimHeight));
+
+    framebuffer.reset_clip(); // Draw everywhere
+    framebuffer.clear(color_to_raylib_hex(cocoui::Color(30, 30, 30)));
+    app_ui.draw(framebuffer, cocoui::Rect(0, 0, kSimWidth, kSimHeight));
+    framebuffer.flush(driver);
+    UpdateTexture(display_texture, framebuffer.data());
+
+    // --- MAIN IDLE LOOP ---
+    bool needs_redraw = false;
 
     while (!WindowShouldClose()) {
         auto touch_x = static_cast<int16_t>(GetMouseX() / kPcScale);
         auto touch_y = static_cast<int16_t>(GetMouseY() / kPcScale);
-        bool is_clicked = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
 
-        // --- DECLARATIVE UI ---
-        auto app_ui = cocoui::make_canvas(
-            
-            // Interactive Button
-            cocoui::make_button(
-                cocoui::make_solid_color(interactive_color), 
-                [&interactive_color]() {
-                    interactive_color = (interactive_color.r == 255) ? cocoui::Colors::Blue : cocoui::Colors::Red;
-                }
-            ).at({100, 100}).size({120, 40}), 
-
-            // Green background box
-            cocoui::make_solid_color(cocoui::Colors::Green)
-                .at({10, 190}).size({40, 40}),
-
-            // The new Image Widget displaying our Flash memory asset
-            cocoui::make_image(smiley_asset).at({26, 206})
-        );
-        
-        app_ui.bounds(cocoui::Rect(0, 0, kSimWidth, kSimHeight));
-
-        if (is_clicked) {
-            app_ui.handle_touch(cocoui::Point(touch_x, touch_y),
-                                cocoui::Rect(0, 0, kSimWidth, kSimHeight));
+        // Process Input
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            auto result = app_ui.handle_touch(cocoui::Point(touch_x, touch_y),
+                                              cocoui::Rect(0, 0, kSimWidth, kSimHeight));
+            // DID SOMETHING GET DIRTY?
+            if (result.consumed) {
+                framebuffer.set_clip(result.dirty_area); // Mask the screen
+                needs_redraw = true;
+            }
         }
 
-        framebuffer.clear(color_to_raylib_hex(cocoui::Color(30, 30, 30)));
-        app_ui.draw(framebuffer, cocoui::Rect(0, 0, kSimWidth, kSimHeight));
+        // Draw ONLY if dirty
+        if (needs_redraw) {
+            // Rebuild UI with new color state
+            auto dynamic_ui = cocoui::make_canvas(
+                cocoui::make_button(
+                    cocoui::make_solid_color(interactive_color), 
+                    [&interactive_color]() {
+                        interactive_color = (interactive_color.r == 255) ? cocoui::Colors::Blue : cocoui::Colors::Red;
+                    }
+                ).at({100, 100}).size({120, 40}), 
+                cocoui::make_solid_color(cocoui::Colors::Green).at({10, 190}).size({40, 40})
+            );
+            dynamic_ui.bounds(cocoui::Rect(0, 0, kSimWidth, kSimHeight));
 
-        UpdateTexture(display_texture, framebuffer.data());
+            // Clear and draw ONLY inside the clip_rect_
+            framebuffer.clear(color_to_raylib_hex(cocoui::Color(30, 30, 30)));
+            dynamic_ui.draw(framebuffer, cocoui::Rect(0, 0, kSimWidth, kSimHeight));
+            
+            // Send the tiny patch to hardware
+            framebuffer.flush(driver); 
+            UpdateTexture(display_texture, framebuffer.data());
+            
+            needs_redraw = false;
+        }
+
+        // Display the GPU texture to the PC window
         BeginDrawing();
         ClearBackground(::BLACK);
         DrawTextureEx(display_texture, {0.0F, 0.0F}, 0.0F, kPcScale, ::WHITE);

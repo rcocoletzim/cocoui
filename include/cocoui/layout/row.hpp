@@ -45,17 +45,17 @@ class Row : public Widget<Row<Children...>> {
     }
 
     template <std::size_t... Indices>
-    bool handle_touch_impl(Point p, const Rect& parent_bounds, std::index_sequence<Indices...>) {
+    EventResult handle_touch_impl(Point p, const Rect& parent_bounds, std::index_sequence<Indices...>) {
         int16_t abs_x = parent_bounds.origin.x + bounds_.origin.x;
         int16_t abs_y = parent_bounds.origin.y + bounds_.origin.y;
         int16_t w = bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width;
 
-        bool handled = false;
+        EventResult handled{false, Rect()};
         using expander = int[];
 
        // We now use dispatch_touch! If the child has no handle_touch, it safely returns false at compile-time.
         (void)expander{
-            0, (handled ? 0
+            0, (handled.consumed ? 0
                         : (handled = cocoui::dispatch_touch(std::get<Indices>(children_),
                                p, Rect(canvas_abs_x, canvas_abs_y, canvas_w, canvas_h)),
                            0))...};

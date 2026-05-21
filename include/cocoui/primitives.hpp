@@ -98,5 +98,35 @@ struct Rect {
         return other.left() < right() && other.right() > left() && other.top() < bottom() &&
                other.bottom() > top();
     }
+
+    [[nodiscard]] constexpr auto intersection(const Rect& other) const -> Rect {
+        // Use pure ternary operators to avoid std::max/std::min reference binding issues 
+        // with temporary prvalues returned by left(), top(), etc. in a constexpr context.
+        int16_t x1 = (left() > other.left()) ? left() : other.left();
+        int16_t y1 = (top() > other.top()) ? top() : other.top();
+        int16_t x2 = (right() < other.right()) ? right() : other.right();
+        int16_t y2 = (bottom() < other.bottom()) ? bottom() : other.bottom();
+
+        if (x1 < x2 && y1 < y2) {
+            // Explicit static_cast neutralizes C++ Integral Promotion (int16_t -> int32_t)
+            // ensuring the constructor receives strict 16-bit values.
+            return {x1, y1, 
+                        static_cast<int16_t>(x2 - x1), 
+                        static_cast<int16_t>(y2 - y1)};
+        }
+        return {0, 0, 0, 0}; // No overlap
+    }
+};
+
+// ============================================================================
+// EVENT RESULT
+// ============================================================================
+// Replaces 'bool' to report exactly WHICH area of the screen got damaged
+struct EventResult {
+    bool consumed;
+    Rect dirty_area;
+
+    constexpr EventResult() : consumed(false), dirty_area(0, 0, 0, 0) {}
+    constexpr EventResult(bool c, Rect r) : consumed(c), dirty_area(r) {}
 };
 }  // namespace cocoui

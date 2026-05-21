@@ -31,15 +31,15 @@ namespace detail {
 // Overload 1: Widget HAS handle_touch (e.g., Button)
 template <typename T>
 constexpr auto dispatch_touch(T& widget, Point p, const Rect& bounds) 
-    -> typename std::enable_if<detail::is_touchable<T>::value, bool>::type {
+    -> typename std::enable_if<detail::is_touchable<T>::value, EventResult>::type {
     return widget.handle_touch(p, bounds);
 }
 
 // Overload 2: Widget DOES NOT have handle_touch (e.g., SolidColor, Image)
 template <typename T>
 constexpr auto dispatch_touch(T& /*widget*/, Point /*p*/, const Rect& /*bounds*/) 
-    -> typename std::enable_if<!detail::is_touchable<T>::value, bool>::type {
-    return false; // Safely ignore at compile-time
+    -> typename std::enable_if<!detail::is_touchable<T>::value, EventResult>::type {
+    return EventResult{false, Rect()};
 }
 
 } // namespace cocoui

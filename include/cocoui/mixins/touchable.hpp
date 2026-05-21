@@ -23,12 +23,12 @@ class Touchable {
     constexpr explicit Touchable(Callback cb) : on_click_(std::move(cb)) {}
 
     // Evaluates if the point is inside the absolute bounds and triggers the callback
-    bool process_touch(Point p, const Rect& absolute_bounds) {
+    EventResult process_touch(Point p, const Rect& absolute_bounds) {
         if (absolute_bounds.contains(p)) {
             on_click_();
-            return true; // Event consumed
+            return EventResult{true, absolute_bounds};; // Event consumed
         }
-        return false; // Event ignored
+        return EventResult{false, Rect()}; // Event ignored
     }
 };
 

@@ -39,8 +39,8 @@ class Button : public Widget<Button<Visual, Callback>>,
     }
 
     // Required by the SFINAE dispatcher. Delegates hit-testing to the Mixin.
-    bool handle_touch(Point p, const Rect& parent_bounds) {
-        if (!this->is_visible_) return false;
+    EventResult handle_touch(Point p, const Rect& parent_bounds) {
+        if (!this->is_visible_) return EventResult{false, Rect()};
 
         Rect absolute_bounds(
             parent_bounds.origin.x + this->bounds_.origin.x, parent_bounds.origin.y + this->bounds_.origin.y,
