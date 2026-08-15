@@ -42,7 +42,8 @@ class Label : public Widget<Label> {
                 const uint8_t* glyph_ptr = font_->bitmap + (char_index * font_->glyph_height);
 
                 fb.draw_glyph(Point(cursor_x, cursor_y), glyph_ptr, 
-                              font_->glyph_width, font_->glyph_height, color_.to_hex());
+                              font_->glyph_width, font_->glyph_height, 
+                                ColorConverter<P>::convert(color_));
             }
 
             // Advance the cursor for the next letter

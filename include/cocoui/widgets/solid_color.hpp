@@ -45,7 +45,7 @@ class SolidColor : public Widget<SolidColor> {
         // Render to the framebuffer
         // For the simulator, to_hex() matches ARGB8888. We will abstract this later for RGB565.
 
-        fb.fill_rect(absolute_bounds, color_.to_hex());
+        fb.fill_rect(absolute_bounds, ColorConverter<P>::convert(color_));
     }
 
     

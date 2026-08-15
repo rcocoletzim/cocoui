@@ -37,6 +37,31 @@ struct Color {
     [[nodiscard]] constexpr auto to_hex() const -> uint32_t {
         return (a << 24) | (r << 16) | (g << 8) | b;
     }
+
+    // Embedded hardware standard (16-bit RGB565)
+    // Drops the alpha channel and packs RGB into 16 bits (5-Red, 6-Green, 5-Blue)
+    [[nodiscard]] constexpr auto to_rgb565() const -> uint16_t {
+        return static_cast<uint16_t>(((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3));
+    }
+};
+
+// ============================================================================
+// COLOR CONVERTER TRAIT (Compile-time resolution)
+// ============================================================================
+// Automatically selects the correct color format based on the Framebuffer's PixelType
+template <typename PixelType>
+struct ColorConverter;
+
+// Specialization for 32-bit displays (Simulators)
+template <>
+struct ColorConverter<uint32_t> {
+    static constexpr auto convert(const Color& c) -> uint32_t { return c.to_hex(); }
+};
+
+// Specialization for 16-bit displays (Embedded LCDs via SPI/I2C)
+template <>
+struct ColorConverter<uint16_t> {
+    static constexpr auto convert(const Color& c) -> uint16_t { return c.to_rgb565(); }
 };
 
 // Standard predefined colors computed at compile-time
