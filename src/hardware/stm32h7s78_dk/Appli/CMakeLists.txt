@@ -49,20 +49,18 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 # Enable CMake support for ASM and C languages
-enable_language(C ASM)
+enable_language(C CXX ASM)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(COCOUI_ROOT "../../../../")
 
 # Add the header for cocoui
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE 
-    ${COCOUI_ROOT}include
-)
+add_subdirectory(${COCOUI_ROOT} cocoui_build)
 
-# Add code of cocoui engine
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE 
-    ${COCOUI_ROOT}src/core.cpp
-    # add stm32_display_driver.cpp when it is ready
-)
+# Linking library
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE cocoui_core)
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE

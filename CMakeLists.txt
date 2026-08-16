@@ -44,18 +44,6 @@ else()
 endif()
 
 # ==============================================================================
-# 2. DEPENDENCIES (Raylib)
-# ==============================================================================
-include(FetchContent)
-FetchContent_Declare(
-    raylib
-    GIT_REPOSITORY https://github.com/raysan5/raylib.git
-    GIT_TAG 5.5 
-)
-set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(raylib)
-
-# ==============================================================================
 # 3. COCOUI CORE (Target: Embedded Microcontroller)
 # ==============================================================================
 add_library(cocoui_core STATIC src/core.cpp)
@@ -71,8 +59,27 @@ endif()
 # ==============================================================================
 # 4. PC SIMULATOR (Target: Desktop / Debugging)
 # ==============================================================================
-add_executable(cocoui_simulator src/simulator/main.cpp)
-target_link_libraries(cocoui_simulator PRIVATE cocoui_core raylib)
+if(NOT CMAKE_CROSSCOMPILING)
 
-# Allow modern C++20 features strictly for the PC simulator
-target_compile_features(cocoui_simulator PRIVATE cxx_std_20)
+    # ==============================================================================
+    # 2. DEPENDENCIES (Raylib)
+    # ==============================================================================
+    include(FetchContent)
+    FetchContent_Declare(
+        raylib
+        GIT_REPOSITORY https://github.com/raysan5/raylib.git
+        GIT_TAG 5.5 
+    )
+    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(raylib)
+
+    # ==============================================================================
+    # 4. PC SIMULATOR (Target: Desktop / Debugging)
+    # ==============================================================================
+    add_executable(cocoui_simulator src/simulator/main.cpp)
+    target_link_libraries(cocoui_simulator PRIVATE cocoui_core raylib)
+
+    # Allow modern C++20 features strictly for the PC simulator
+    target_compile_features(cocoui_simulator PRIVATE cxx_std_20)
+
+endif()
