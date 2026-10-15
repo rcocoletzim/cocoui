@@ -35,7 +35,10 @@ struct Color {
 
     // Helper to convert to a 32-bit integer (useful for Raylib and Framebuffers)
     [[nodiscard]] constexpr auto to_hex() const -> uint32_t {
-        return (a << 24) | (r << 16) | (g << 8) | b;
+        return (static_cast<uint32_t>(a) << 24) | 
+               (static_cast<uint32_t>(r) << 16) | 
+               (static_cast<uint32_t>(g) << 8)  | 
+               static_cast<uint32_t>(b);
     }
 
     // Embedded hardware standard (16-bit RGB565)

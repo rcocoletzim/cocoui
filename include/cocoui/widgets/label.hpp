@@ -1,6 +1,6 @@
 /*
- * CocoUI Framework
- * SPDX-License-Identifier: Zlib
+- CocoUI Framework
+- SPDX-License-Identifier: Zlib
  */
 
 #pragma once
@@ -31,23 +31,25 @@ class Label : public Widget<Label> {
         int16_t cursor_x = parent_bounds.origin.x + this->bounds_.origin.x;
         int16_t cursor_y = parent_bounds.origin.y + this->bounds_.origin.y;
 
-        // Iterate through the string until the null-terminator '\0'
         for (const char* c = text_; *c != '\0'; ++c) {
+            // Conversión básica a codepoint (Asume ASCII directo por el momento)
+            uint32_t codepoint = static_cast<uint32_t>(*c);
             
-            // Check if the character exists in our Font ROM
-            if (*c >= font_->first_char && *c <= font_->last_char) {
-                // Calculate the memory offset for this specific letter
-                uint16_t char_index = *c - font_->first_char;
-                // Since our font is monospaced, the offset is predictable
-                const uint8_t* glyph_ptr = font_->bitmap + (char_index * font_->glyph_height);
+            const Glyph* glyph = font_->get_glyph(codepoint);
+            if (glyph != nullptr) {
+                const uint8_t* glyph_ptr = font_->pixel_data + glyph->data_offset;
 
-                fb.draw_glyph(Point(cursor_x, cursor_y), glyph_ptr, 
-                              font_->glyph_width, font_->glyph_height, 
-                                ColorConverter<P>::convert(color_));
+                // Ajustar la posición sumando los offsets individuales del glifo
+                int16_t draw_x = cursor_x + glyph->offset_x;
+                int16_t draw_y = cursor_y + glyph->offset_y;
+
+                fb.draw_glyph(Point(draw_x, draw_y), glyph_ptr, 
+                              glyph->width, glyph->height, font_->bpp,
+                              ColorConverter<P>::convert(color_));
+
+                // Avanzar el cursor según el ancho real de la letra
+                cursor_x += glyph->advance;
             }
-
-            // Advance the cursor for the next letter
-            cursor_x += font_->glyph_width;
         }
     }
 };

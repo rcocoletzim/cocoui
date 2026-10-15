@@ -1,6 +1,6 @@
 /*
- * CocoUI Framework - PC Simulator
- * SPDX-License-Identifier: Zlib
+- CocoUI Framework - PC Simulator
+- SPDX-License-Identifier: Zlib
  */
 
 #include <raylib.h>
@@ -44,12 +44,8 @@ const uint32_t smiley_data[64] = {
 };
 const cocoui::Bitmap smiley_asset = { cocoui::Size(8, 8), smiley_data };
 
-const uint8_t abc_font_bitmap[] = {
-    0x38, 0x6C, 0xC6, 0xFE, 0xC6, 0xC6, 0xC6, 0x00, // A
-    0xFC, 0x66, 0x66, 0x7C, 0x66, 0x66, 0xFC, 0x00, // B
-    0x3C, 0x66, 0xC0, 0xC0, 0xC0, 0x66, 0x3C, 0x00, // C
-};
-const cocoui::Font font_8x8 = { abc_font_bitmap, 8, 8, 'A', 'C' };
+// DECLARACIÓN DE LA NUEVA FUENTE (Debe coincidir con el nombre generado por Python)
+extern const cocoui::Font custom_italic_font; 
 
 // ============================================================================
 // APPLICATION DOMAIN (Declarative UI)
@@ -68,12 +64,13 @@ constexpr auto build_ui(AppState& state) {
     return Canvas(
         
         // Prefabricated Button with modular text offset position
-        TextButton("C A B", font_8x8, state.current_theme, White, {30, 16}, [&state]() {
+        // Usamos la nueva fuente aquí
+        TextButton("Start", custom_italic_font, state.current_theme, White, {30, 12}, [&state]() {
             state.click_count++;
             state.current_theme = (state.current_theme.r == 255) ? Blue : Red;
         }).at({100, 100}).size({120, 40}),
 
-        TextButton("C B", font_8x8, state.current_theme, White, {30, 16}, [&state]() {
+        TextButton("Stop", custom_italic_font, state.current_theme, White, {30, 12}, [&state]() {
             state.click_count++;
             state.current_theme = (state.current_theme.r == 255) ? Blue : Red;
         }).at({100, 170}).size({120, 40}),

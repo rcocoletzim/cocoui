@@ -84,7 +84,12 @@ if(NOT CMAKE_CROSSCOMPILING)
     # ==============================================================================
     # 4. PC SIMULATOR (Target: Desktop / Debugging)
     # ==============================================================================
-    add_executable(cocoui_simulator src/simulator/main.cpp)
+    file(GLOB FONT_SOURCES CONFIGURE_DEPENDS "fonts/*.cpp")
+
+    add_executable(cocoui_simulator 
+                    src/simulator/main.cpp
+                    ${FONT_SOURCES})
+                    
     target_link_libraries(cocoui_simulator PRIVATE cocoui_core raylib)
 
     # Allow modern C++20 features strictly for the PC simulator

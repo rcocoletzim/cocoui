@@ -157,28 +157,79 @@ class Framebuffer {
      * @brief Draws a monochrome (1-bit per pixel) glyph. 
      * Assumes widths up to 8 pixels (1 byte per row) for simplicity in this version.
      */
-    void draw_glyph(Point dest, const uint8_t* glyph_data, uint8_t glyph_width, uint8_t glyph_height, PixelType color_value) noexcept {
-        // 1. Clipping boundaries
-        int16_t x_start = std::max(static_cast<int16_t>(0), dest.x);
-        int16_t y_start = std::max(static_cast<int16_t>(0), dest.y);
-        int16_t x_end = std::min(width, static_cast<int16_t>(dest.x + glyph_width));
-        int16_t y_end = std::min(height, static_cast<int16_t>(dest.y + glyph_height));
+    void draw_glyph(Point dest, const uint8_t* glyph_data, uint8_t glyph_width, uint8_t glyph_height, uint8_t bpp, PixelType color_value) noexcept {
+        int16_t x_start = (dest.x > clip_rect_.left()) ? dest.x : clip_rect_.left();
+        int16_t y_start = (dest.y > clip_rect_.top()) ? dest.y : clip_rect_.top();
+        
+        int16_t dest_right = dest.x + glyph_width;
+        int16_t dest_bottom = dest.y + glyph_height;
+        
+        int16_t x_end = (dest_right < clip_rect_.right()) ? dest_right : clip_rect_.right();
+        int16_t y_end = (dest_bottom < clip_rect_.bottom()) ? dest_bottom : clip_rect_.bottom();
 
-        if (x_start >= x_end || y_start >= y_end) { return;
-}
+        uint16_t pitch = ((glyph_width * bpp) + 7) / 8;
+        uint8_t mask = (1 << bpp) - 1;
 
-        // 2. Decode the 1-bit mask and draw
+        uint32_t fg_r = 0;
+        uint32_t fg_g = 0;
+        uint32_t fg_b = 0;
+        if constexpr (sizeof(PixelType) == 4) { 
+            fg_r = (color_value >> 16) & 0xFF;
+            fg_g = (color_value >> 8) & 0xFF;
+            fg_b = color_value & 0xFF;
+        } else if constexpr (sizeof(PixelType) == 2) { 
+            fg_r = ((color_value >> 11) & 0x1F) << 3;
+            fg_g = ((color_value >> 5) & 0x3F) << 2;
+            fg_b = (color_value & 0x1F) << 3;
+        }
+
         for (int16_t y = y_start; y < y_end; ++y) {
             int16_t src_y = y - dest.y;
-            // Grab the row mask (1 byte = 8 pixels)
-            uint8_t row_mask = glyph_data[src_y];
+            uint32_t row_offset = src_y * pitch;
             
             for (int16_t x = x_start; x < x_end; ++x) {
                 int16_t src_x = x - dest.x;
                 
-                // Read bits from MSB (Most Significant Bit) to LSB (Left to Right)
-                if ((row_mask & (1 << (7 - src_x))) != 0) {
-                    data_[(y * width) + x] = color_value;
+                uint32_t byte_idx = row_offset + ((src_x * bpp) / 8);
+                uint8_t bit_shift = 8 - bpp - ((src_x * bpp) % 8);
+                uint8_t raw_val = (glyph_data[byte_idx] >> bit_shift) & mask;
+                
+                if (raw_val == 0) { continue; 
+}
+
+                uint32_t alpha = (bpp == 8) ? raw_val : (raw_val * 255) / mask;
+
+                if (alpha == 255) {
+                    draw_pixel(x, y, color_value); 
+                } else {
+                    PixelType bg_pixel = data_[(y * width) + x]; 
+                    PixelType blended_pixel = color_value;
+
+                    if constexpr (sizeof(PixelType) == 4) { 
+                        uint32_t bg_r = (bg_pixel >> 16) & 0xFF;
+                        uint32_t bg_g = (bg_pixel >> 8) & 0xFF;
+                        uint32_t bg_b = bg_pixel & 0xFF;
+
+                        uint32_t out_r = ((fg_r * alpha) + (bg_r * (255 - alpha))) / 255;
+                        uint32_t out_g = ((fg_g * alpha) + (bg_g * (255 - alpha))) / 255;
+                        uint32_t out_b = ((fg_b * alpha) + (bg_b * (255 - alpha))) / 255;
+
+                        // 255U (Unsigned) salva el día contra el Comportamiento Indefinido
+                        blended_pixel = (255U << 24) | (out_r << 16) | (out_g << 8) | out_b;
+                    } 
+                    else if constexpr (sizeof(PixelType) == 2) { 
+                        uint32_t bg_r = ((bg_pixel >> 11) & 0x1F) << 3;
+                        uint32_t bg_g = ((bg_pixel >> 5) & 0x3F) << 2;
+                        uint32_t bg_b = (bg_pixel & 0x1F) << 3;
+
+                        uint32_t out_r = ((fg_r * alpha) + (bg_r * (255 - alpha))) / 255;
+                        uint32_t out_g = ((fg_g * alpha) + (bg_g * (255 - alpha))) / 255;
+                        uint32_t out_b = ((fg_b * alpha) + (bg_b * (255 - alpha))) / 255;
+
+                        blended_pixel = ((out_r >> 3) << 11) | ((out_g >> 2) << 5) | (out_b >> 3);
+                    }
+                    
+                    draw_pixel(x, y, blended_pixel);
                 }
             }
         }
