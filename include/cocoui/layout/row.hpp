@@ -30,11 +30,11 @@ class Row : public Widget<Row<Children...>> {
         using expander = int[];
 
         // Calculate absolute position of this row based on its parent
-        int16_t abs_x = parent_bounds.origin.x + bounds_.origin.x;
-        int16_t abs_y = parent_bounds.origin.y + bounds_.origin.y;
+        int16_t abs_x = parent_bounds.origin.x + this->bounds_.origin.x;
+        int16_t abs_y = parent_bounds.origin.y + this->bounds_.origin.y;
 
         // If no explicit height is set, fill the parent's height
-        int16_t h = bounds_.size.height > 0 ? bounds_.size.height : parent_bounds.size.height;
+        int16_t h = this->bounds_.size.height > 0 ? this->bounds_.size.height : parent_bounds.size.height;
 
         // Unpack tuple and draw each child.
         // We advance on the X axis. Hardcoded to 40px width per child for initial testing.
@@ -46,10 +46,11 @@ class Row : public Widget<Row<Children...>> {
 
     template <std::size_t... Indices>
     EventResult handle_touch_impl(Point p, const Rect& parent_bounds, std::index_sequence<Indices...>) {
-        int16_t abs_x = parent_bounds.origin.x + bounds_.origin.x;
-        int16_t abs_y = parent_bounds.origin.y + bounds_.origin.y;
-        int16_t w = bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width;
-
+        int16_t abs_x = parent_bounds.origin.x + this->bounds_.origin.x;
+        int16_t abs_y = parent_bounds.origin.y + this->bounds_.origin.y;
+        int16_t w = this->bounds_.size.width > 0 ? this->bounds_.size.width : parent_bounds.size.width;
+        int16_t h = this->bounds_.size.height > 0 ? this->bounds_.size.height : parent_bounds.size.height;
+        
         EventResult handled{false, Rect()};
         using expander = int[];
 
@@ -57,7 +58,7 @@ class Row : public Widget<Row<Children...>> {
         (void)expander{
             0, (handled.consumed ? 0
                         : (handled = cocoui::dispatch_touch(std::get<Indices>(children_),
-                               p, Rect(canvas_abs_x, canvas_abs_y, canvas_w, canvas_h)),
+                               p, Rect(abs_x, abs_y, w, h)),
                            0))...};
         return handled;
     }
@@ -69,7 +70,7 @@ class Row : public Widget<Row<Children...>> {
     // Public draw interface (Static Polymorphism)
     template <typename FB>
     void draw(FB& fb, const Rect& parent_bounds) const {
-        if (!is_visible_) return;
+        if (!this->is_visible_) return;
         // Generate a compile-time sequence to iterate the tuple
         draw_impl(fb, parent_bounds, std::index_sequence_for<Children...>{});
     }

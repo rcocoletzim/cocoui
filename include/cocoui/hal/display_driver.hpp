@@ -7,8 +7,8 @@
 
 #include "cocoui/primitives.hpp"
 
-namespace cocoui {
-namespace hal {
+
+namespace cocoui::hal {
 
 /**
  * @brief Hardware Abstraction Layer for Displays.
@@ -30,5 +30,4 @@ class DisplayDriver {
     virtual void flush_area(const Rect& area, const PixelType* color_data) = 0;
 };
 
-}  // namespace hal
-}  // namespace cocoui
+} // namespace cocoui::hal

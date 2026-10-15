@@ -29,11 +29,11 @@ class Canvas : public Widget<Canvas<Children...>> {
         using expander = int[];
 
         // absolute position of canves in screen
-        int16_t canvas_abs_x = parent_bounds.origin.x + bounds_.origin.x;
-        int16_t canvas_abs_y = parent_bounds.origin.y + bounds_.origin.y;
+        int16_t canvas_abs_x = parent_bounds.origin.x + this->bounds_.origin.x;
+        int16_t canvas_abs_y = parent_bounds.origin.y + this->bounds_.origin.y;
         
-        int16_t canvas_w = bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width;
-        int16_t canvas_h = bounds_.size.height > 0 ? bounds_.size.height : parent_bounds.size.height;
+        int16_t canvas_w = this->bounds_.size.width > 0 ? this->bounds_.size.width : parent_bounds.size.width;
+        int16_t canvas_h = this->bounds_.size.height > 0 ? this->bounds_.size.height : parent_bounds.size.height;
 
 
         (void)expander{0,
@@ -44,11 +44,11 @@ class Canvas : public Widget<Canvas<Children...>> {
 
     template <std::size_t... Indices>
     EventResult handle_touch_impl(Point p, const Rect& parent_bounds, std::index_sequence<Indices...>) {
-        int16_t canvas_abs_x = parent_bounds.origin.x + bounds_.origin.x;
-        int16_t canvas_abs_y = parent_bounds.origin.y + bounds_.origin.y;
+        int16_t canvas_abs_x = parent_bounds.origin.x + this->bounds_.origin.x;
+        int16_t canvas_abs_y = parent_bounds.origin.y + this->bounds_.origin.y;
         
-        int16_t canvas_w = bounds_.size.width > 0 ? bounds_.size.width : parent_bounds.size.width;
-        int16_t canvas_h = bounds_.size.height > 0 ? bounds_.size.height : parent_bounds.size.height;
+        int16_t canvas_w = this->bounds_.size.width > 0 ? this->bounds_.size.width : parent_bounds.size.width;
+        int16_t canvas_h = this->bounds_.size.height > 0 ? this->bounds_.size.height : parent_bounds.size.height;
 
         EventResult handled{false, Rect()};
         using expander = int[];
@@ -67,12 +67,12 @@ class Canvas : public Widget<Canvas<Children...>> {
 
     template <typename FB>
     void draw(FB& fb, const Rect& parent_bounds) const {
-        if (!is_visible_) return;
+        if (!this->is_visible_) return;
         draw_impl(fb, parent_bounds, std::index_sequence_for<Children...>{});
     }
 
     EventResult handle_touch(Point p, const Rect& parent_bounds) {
-        if (!is_visible_) return EventResult{false, Rect()};;
+        if (!this->is_visible_) return EventResult{false, Rect()};;
         return handle_touch_impl(p, parent_bounds, std::index_sequence_for<Children...>{});
     }
 };

@@ -64,14 +64,22 @@ if(NOT CMAKE_CROSSCOMPILING)
     # ==============================================================================
     # 2. DEPENDENCIES (Raylib)
     # ==============================================================================
-    include(FetchContent)
-    FetchContent_Declare(
-        raylib
-        GIT_REPOSITORY https://github.com/raysan5/raylib.git
-        GIT_TAG 5.5 
-    )
-    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-    FetchContent_MakeAvailable(raylib)
+    find_package(raylib QUIET)
+
+    if(raylib_FOUND)
+        message(STATUS "Raylib found in the system. Using precompiled version.")
+    else()
+        message(STATUS "Raylib not found in the system. Downloading and compiling via FetchContent...")
+        
+        include(FetchContent)
+        FetchContent_Declare(
+            raylib
+            GIT_REPOSITORY https://github.com/raysan5/raylib.git
+            GIT_TAG 5.5 
+        )
+        set(BUILD_EXAMPLES OFF CACHE BOOL "Disable raylib examples" FORCE)
+        FetchContent_MakeAvailable(raylib)
+    endif()
 
     # ==============================================================================
     # 4. PC SIMULATOR (Target: Desktop / Debugging)

@@ -109,7 +109,8 @@ class Framebuffer {
         Rect target = rect.intersection(clip_rect_);
         
         // 2. Early exit if nothing to draw
-        if (target.size.width <= 0 || target.size.height <= 0) return;
+        if (target.size.width <= 0 || target.size.height <= 0) { return;
+}
 
         // 3. Row-by-row rendering
         const int16_t row_width = target.size.width;
@@ -163,7 +164,8 @@ class Framebuffer {
         int16_t x_end = std::min(width, static_cast<int16_t>(dest.x + glyph_width));
         int16_t y_end = std::min(height, static_cast<int16_t>(dest.y + glyph_height));
 
-        if (x_start >= x_end || y_start >= y_end) return;
+        if (x_start >= x_end || y_start >= y_end) { return;
+}
 
         // 2. Decode the 1-bit mask and draw
         for (int16_t y = y_start; y < y_end; ++y) {
@@ -175,7 +177,7 @@ class Framebuffer {
                 int16_t src_x = x - dest.x;
                 
                 // Read bits from MSB (Most Significant Bit) to LSB (Left to Right)
-                if (row_mask & (1 << (7 - src_x))) {
+                if ((row_mask & (1 << (7 - src_x))) != 0) {
                     data_[(y * width) + x] = color_value;
                 }
             }

@@ -17,12 +17,34 @@
         "CMAKE_CXX_COMPILER": "clang++",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
+    },
+    {
+      "name": "macos-clang",
+      "displayName": "macOS LLVM/Clang (Ninja)",
+      "description": "Configures the project using the official LLVM Clang compiler",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_PREFIX_PATH": "/opt/homebrew/opt",
+        "CMAKE_AR": "/usr/bin/ar",
+        "CMAKE_RANLIB": "/usr/bin/ranlib"
+      }
     }
   ],
   "buildPresets": [
     {
-      "name": "build-simulator",
+      "name": "build-simulator-windows-clang",
       "configurePreset": "windows-clang",
+      "displayName": "Build Simulator Target",
+      "description": "Builds ONLY the PC simulator executable and its dependencies",
+      "targets": ["cocoui_simulator"]
+    },
+    {
+      "name": "build-simulator-macos-clang",
+      "configurePreset": "macos-clang",
       "displayName": "Build Simulator Target",
       "description": "Builds ONLY the PC simulator executable and its dependencies",
       "targets": ["cocoui_simulator"]
