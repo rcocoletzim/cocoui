@@ -116,7 +116,7 @@ struct Rect {
     [[nodiscard]] constexpr auto top() const -> int16_t { return origin.y; }
     [[nodiscard]] constexpr auto bottom() const -> int16_t { return origin.y + size.height; }
 
-    // Vital for Touch/Click detection in our IMGUI / Declarative approach
+    // Vital for Touch/Click detection
     [[nodiscard]] constexpr auto contains(const Point& p) const -> bool {
         return p.x >= left() && p.x < right() && p.y >= top() && p.y < bottom();
     }

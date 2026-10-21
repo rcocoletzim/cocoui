@@ -44,7 +44,6 @@ const uint32_t smiley_data[64] = {
 };
 const cocoui::Bitmap smiley_asset = { cocoui::Size(8, 8), smiley_data };
 
-// DECLARACIÓN DE LA NUEVA FUENTE (Debe coincidir con el nombre generado por Python)
 extern const cocoui::Font custom_italic_font; 
 
 // ============================================================================
@@ -65,7 +64,7 @@ constexpr auto build_ui(AppState& state) {
         
         // Prefabricated Button with modular text offset position
         // Usamos la nueva fuente aquí
-        TextButton("Start", custom_italic_font, state.current_theme, White, {30, 12}, [&state]() {
+        TextButton("Start", custom_italic_font, state.current_theme, White, {30, 22}, [&state]() {
             state.click_count++;
             state.current_theme = (state.current_theme.r == 255) ? Blue : Red;
         }).at({100, 100}).size({120, 40}),
